@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standoff 2 Читы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            color: #fff;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        header {
+            background-color: #333;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .menu-icon:hover {
+            transform: rotate(90deg);
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #222;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: left 0.3s ease;
+            padding-top: 60px;
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #444;
+            transform: translateX(10px);
+        }
+        .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .close-icon:hover {
+            transform: scale(1.2);
+        }
+        .container {
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+        .container.active {
+            margin-left: 250px;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 10px;
+            margin: 0 auto;
+            width: 80%;
+            animation: fadeIn 0.5s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .login-form, .profile, .donate, .cheats-list, .news, .faq, .paid-cheats {
+            margin: 20px auto;
+            width: 300px;
+            padding: 20px;
+            background-color: #555;
+            border-radius: 10px;
+            animation: slideIn 0.5s;
+        }
+        .login-form input, .profile input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        .login-form button, .profile button {
+            width: 100%;
+            padding: 10px;
+            background-color: #666;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .login-form button:hover, .profile button:hover {
+            background-color: #777;
+            transform: scale(1.05);
+        }
+        .profile img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            transition: transform 0.3s;
+        }
+        .profile img:hover {
+            transform: scale(1.1);
+        }
+        .cheat-item {
+            padding: 10px;
+            background-color: #555;
+            border-radius: 5px;
+            margin: 10px 0;
+            transition: transform 0.3s;
+        }
+        .cheat-item:hover {
+            transform: scale(1.05);
+        }
+        .cheat-item a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .cheat-item a:hover {
+            text-decoration: underline;
+        }
+        .register-link {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .register-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        footer {
+            background-color: #333;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes colorChange {
+            0% { background-color: #666; }
+            50% { background-color: #ff6347; }
+            100% { background-color: #666; }
+        }
+        .cheat-item {
+            animation: bounce 2s infinite, colorChange 3s infinite;
+        }
+        @media (max-width: 768px) {
+            .container.active {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+        <div>Standoff 2 Читы</div>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <div class="close-icon" onclick="toggleSidebar()">×</div>
+        <a href="#" data-tab="login" onclick="switchTab('login')">Вход</a>
+        <a href="#" data-tab="cheats" onclick="switchTab('cheats')">Читы</a>
+        <a href="#" data-tab="paid-cheats" onclick="switchTab('paid-cheats')">Платные читы</a>
+        <a href="#" data-tab="donate" onclick="switchTab('donate')">Донат</a>
+        <a href="#" data-tab="news" onclick="switchTab('news')">Новости</a>
+        <a href="#" data-tab="faq" onclick="switchTab('faq')">FAQ</a>
+        <a href="#" data-tab="profile" id="profile-link" style="display: none;" onclick="switchTab('profile')">Личный кабинет</a>
+        <a href="#" onclick="logout()" id="logout-link" style="display: none;">Выход</a>
+    </div>
+
+    <div class="container" id="container">
+        <div id="login" class="tab-content active">
+            <div class="login-form">
+                <h2>Вход</h2>
+                <input type="text" id="login-username" placeholder="Логин">
+                <input type="password" id="login-password" placeholder="Пароль">
+                <button onclick="login()">Войти</button>
+                <div class="register-link" onclick="showRegister()">Регистрация</div>
+            </div>
+        </div>
+
+        <div id="register" class="tab-content">
+            <div class="login-form">
+                <h2>Регистрация</h2>
+                <input type="text" id="register-username" placeholder="Логин">
+                <input type="password" id="register-password" placeholder="Пароль">
+                <input type="email" id="register-email" placeholder="Почта">
+                <div id="captcha">
+                    <p>Введите капчу: <strong id="captcha-text"></strong></p>
+                    <input type="text" id="captcha-input" placeholder="Капча">
+                </div>
+                <button onclick="register()">Зарегистрироваться</button>
+            </div>
+        </div>
+
+        <div id="profile" class="tab-content">
+            <div class="profile">
+                <h2>Личный кабинет</h2>
+                <img id="avatar" src="https://via.placeholder.com/100" alt="Аватар">
+                <input type="file" id="avatar-upload" accept="image/*" onchange="uploadAvatar()">
+                <input type="text" id="profile-email" placeholder="Почта">
+                <input type="password" id="profile-password" placeholder="Новый пароль">
+                <button onclick="updateProfile()">Сохранить изменения</button>
+                <div id="admin-panel" style="display: none;">
+                    <h3>Админка</h3>
+                    <input type="password" id="admin-password" placeholder="Введите пароль админа">
+                    <button onclick="unlockAdminPanel()">Разблокировать админку</button>
+                    <div id="admin-features" style="display: none;">
+                        <input type="text" id="add-money-username" placeholder="Логин пользователя">
+                        <input type="number" id="add-money-amount" placeholder="Сумма">
+                        <button onclick="addMoney()">Добавить деньги</button>
+                        <input type="text" id="ban-username" placeholder="Логин для бана">
+                        <button onclick="banUser()">Забанить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="cheats" class="tab-content">
+            <div class="cheats-list">
+                <h2>Доступные читы</h2>
+                <div class="cheat-item">
+                    <a href="https://drive.google.com/file/d/1pAVVUNOx4yhH71aCuLwBsA1JlwsSCKJD/view?usp=sharing" target="_blank">
+                        Чит 1: @AimBottuk 0.32.2 (ROOT)
+                    </a>
+                </div>
+                <div class="cheat-item">
+                    <a href="https://drive.google.com/file/d/1zQkp-gtR8PFNsuNkRQOatChv-AdnwquA/view?usp=sharing" target="_blank">
+                        Чит 2: @standoffchetfree [0.32.2] (ROOT)
+                    </a>
+                </div>
+                <div class="cheat-item">
+                    <a href="https://drive.google.com/file/d/1tzdKGwgqbOf0hRPbhbL1ZYxkYgJM7JsF/view?usp=sharing" target="_blank">
+                        Чит 3: Cheat BloodyTap [0.32.2] (ROOT)
+                    </a>
+                </div>
+                <div class="cheat-item">
+                    <a href="https://drive.google.com/file/d/1Fbsc8qMePM7roYjWrm5KJ9c_UEDSYsM3/view?usp=sharing" target="_blank">
+                        Чит 4: Nerestexternal PREMIUM 0.32.2 (ROOT)
+                    </a>
+                </div>
+                <div class="cheat-item">
+                    <a href="https://drive.google.com/file/d/1Fbsc8qMePM7roYjWrm5KJ9c_UEDSYsM3/view?usp=sharing" target="_blank">
+                        Чит 5: NightInjector 0.32.2 v5 (ROOT)
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="paid-cheats" class="tab-content">
+            <div class="paid-cheats">
+                <h2>Платные читы</h2>
+                <div class="cheat-item">
+                    <a href="#" onclick="buyCheat('Wartysoft [0.32.2]', 500)">
+                        Wartysoft [0.32.2] - 500 руб
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="donate" class="tab-content">
+            <div class="donate">
+                <h2>Донат</h2>
+                <p>Поддержите проект, чтобы получить доступ к эксклюзивным читам!</p>
+                <button onclick="donate()">Поддержать</button>
+            </div>
+        </div>
+
+        <div id="news" class="tab-content">
+            <div class="news">
+                <h2>Новости</h2>
+                <p>Следите за обновлениями и новыми читами!</p>
+            </div>
+        </div>
+
+        <div id="faq" class="tab-content">
+            <div class="faq">
+                <h2>FAQ</h2>
+                <p>Часто задаваемые вопросы и ответы на них.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Standoff 2 Читы. Все права защищены.
+    </footer>
+
+    <script>
+        // База данных (LocalStorage)
+        let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+        const adminAccount = { username: '123', password: '123', email: 'admin@example.com', balance: 0, paidCheats: [], isAdmin: true };
+        if (!accounts.find(acc => acc.username === '123')) {
+            accounts.push(adminAccount);
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+        }
+
+        // Текущий пользователь
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+        // Генерация капчи
+        function generateCaptcha() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let captcha = '';
+            for (let i = 0; i < 6; i++) {
+                captcha += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return captcha;
+        }
+
+        let currentCaptcha = generateCaptcha();
+        document.getElementById('captcha-text').textContent = currentCaptcha;
+
+        // Переключение вкладок
+        function switchTab(tabId) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            toggleSidebar(); // Закрываем боковое меню после переключения
+        }
+
+        // Боковое меню
+        const sidebar = document.getElementById('sidebar');
+        const container = document.getElementById('container');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            container.classList.toggle('active');
+        }
+
+        // Показать регистрацию
+        function showRegister() {
+            document.getElementById('login').classList.remove('active');
+            document.getElementById('register').classList.add('active');
+            currentCaptcha = generateCaptcha();
+            document.getElementById('captcha-text').textContent = currentCaptcha;
+        }
+
+        // Логин
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const account = accounts.find(acc => acc.username === username && acc.password === password);
+            if (account) {
+                if (account.banned) {
+                    alert('Ваш аккаунт забанен!');
+                    return;
+                }
+                alert('Вход выполнен!');
+                currentUser = account;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                if (username === '123') {
+                    document.getElementById('admin-panel').style.display = 'block';
+                }
+                document.getElementById('profile-link').style.display = 'block';
+                document.getElementById('logout-link').style.display = 'block';
+                switchTab('profile');
+            } else {
+                alert('Неверный логин или пароль!');
+            }
+        }
+
+        // Регистрация
+        function register() {
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const email = document.getElementById('register-email').value;
+            const captchaInput = document.getElementById('captcha-input').value;
+
+            if (username && password && email) {
+                if (captchaInput === currentCaptcha) {
+                    if (accounts.find(acc => acc.username === username)) {
+                        alert('Пользователь уже существует!');
+                    } else {
+                        accounts.push({ username, password, email, balance: 0, paidCheats: [], banned: false });
+                        localStorage.setItem('accounts', JSON.stringify(accounts));
+                        alert('Регистрация успешна!');
+                        document.getElementById('register').classList.remove('active');
+                        document.getElementById('login').classList.add('active');
+                    }
+                } else {
+                    alert('Неверная капча!');
+                }
+            } else {
+                alert('Заполните все поля!');
+            }
+        }
+
+        // Загрузка аватарки
+        function uploadAvatar() {
+            const file = document.getElementById('avatar-upload').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('avatar').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Обновление профиля
+        function updateProfile() {
+            const email = document.getElementById('profile-email').value;
+            const password = document.getElementById('profile-password').value;
+            if (email || password) {
+                alert('Изменения сохранены!');
+            } else {
+                alert('Введите новые данные!');
+            }
+        }
+
+        // Разблокировка админ-панели
+        function unlockAdminPanel() {
+            const adminPassword = document.getElementById('admin-password').value;
+            if (adminPassword === 'admin123') { // Пароль для админки
+                document.getElementById('admin-features').style.display = 'block';
+                alert('Админ-панель разблокирована!');
+            } else {
+                alert('Неверный пароль админа!');
+            }
+        }
+
+        // Добавить деньги на баланс
+        function addMoney() {
+            const username = document.getElementById('add-money-username').value;
+            const amount = parseInt(document.getElementById('add-money-amount').value);
+            if (username && amount > 0) {
+                const account = accounts.find(acc => acc.username === username);
+                if (account) {
+                    account.balance += amount;
+                    localStorage.setItem('accounts', JSON.stringify(accounts));
+                    alert(`Баланс пользователя ${username} пополнен на ${amount} руб.`);
+                } else {
+                    alert('Пользователь не найден!');
+                }
+            } else {
+                alert('Введите логин и сумму!');
+            }
+        }
+
+        // Бан пользователя
+        function banUser() {
+            const username = document.getElementById('ban-username').value;
+            if (username) {
+                const account = accounts.find(acc => acc.username === username);
+                if (account) {
+                    account.banned = true;
+                    localStorage.setItem('accounts', JSON.stringify(accounts));
+                    alert(`Пользователь ${username} забанен!`);
+                } else {
+                    alert('Пользователь не найден!');
+                }
+            } else {
+                alert('Введите логин пользователя!');
+            }
+        }
+
+        // Выход из аккаунта
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            alert('Вы вышли из аккаунта!');
+            document.getElementById('profile-link').style.display = 'none';
+            document.getElementById('logout-link').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'none';
+            switchTab('login');
+        }
+
+        // Покупка платного чита
+        function buyCheat(cheatName, price) {
+            if (!currentUser) {
+                alert('Войдите в систему для покупки читов!');
+                return;
+            }
+            if (currentUser.paidCheats.includes(cheatName)) {
+                alert('Вы уже купили этот чит!');
+                return;
+            }
+            if (currentUser.balance >= price) {
+                currentUser.balance -= price;
+                currentUser.paidCheats.push(cheatName);
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                alert(`Чит "${cheatName}" успешно приобретен!`);
+            } else {
+                alert('Недостаточно средств на балансе!');
+            }
+        }
+
+        // Донат
+        function donate() {
+            alert('Спасибо за поддержку!');
+        }
+    </script>
+</body>
+</html>
